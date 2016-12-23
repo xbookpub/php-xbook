@@ -23,11 +23,32 @@
   <div class="am-u-md-12">
     <div class="am-g">
       <div class="am-u-sm-12 am-u-sm-centered">
-        <?php foreach ($chapters as $chapter): ?>
-        <div class="am-cf am-article">
-            <a href="<?=uri("chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
-        </div>
-        <?php endforeach; ?>
+        <?php if (isset($volumes)): ?>
+            <section data-am-widget="accordion" class="am-accordion am-accordion-basic" data-am-accordion='{  }'>
+                <?php foreach ($volumes as $vol): ?>
+                <dl class="am-accordion-item">
+                  <dt class="am-accordion-title">
+                      <?php echo $vol['name']; ?>
+                  </dt>
+                  <dd class="am-accordion-bd am-collapse">
+                    <div class="am-accordion-content">
+                      <?php foreach ($vol['chapters'] as $chapter): ?>
+                      <div class="am-cf am-article">
+                        <a href="<?=uri("chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
+                      </div>
+                      <?php endforeach; ?>
+                    </div>
+                  </dd>
+                </dl>
+                <?php endforeach; ?>
+            </section>
+        <?php else: ?>
+            <?php foreach ($chapters as $chapter): ?>
+            <div class="am-cf am-article">
+                <a href="<?=uri("chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
+            </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
         <hr/>
       </div>
     </div>

@@ -7,7 +7,15 @@ Route::get('/', function () {
 Route::get('books/{:id?}', function ($id=false) {
     if ($id !== false) {
         if ($book = find('books', ['id'=>$id])) {
-            echo view('chapters', ['title'=>$book['name'], 'chapters'=>findAll('chapters', ['book_id'=>$id], '`num` ASC')]);
+            if ($volumes = findAll('volumes', ['book_id'=>$id])) {
+                foreach ($volumes as $k=>$volume) {
+                    $volumes[$k]['chapters'] = findAll('chapters', ['volume_id'=>$volumes[$k]['id']], '`num` ASC');
+                }
+                echo view('chapters', ['title'=>$book['name'], 'volumes'=>$volumes]);
+            } else {
+                $chapters = findAll('chapters', ['book_id'=>$id], '`num` ASC');
+                echo view('chapters', ['title'=>$book['name'], 'chapters'=>$chapters]);
+            }
         } else {
             redirect('/');
         }
@@ -29,7 +37,7 @@ Route::get('chapters/{:id?}', function ($id=false) {
         $chapter['pre']  = find('chapters', ['book_id'=>$chapter['book_id'], 'num'=>$pre])['id'];
         $chapter['next'] = find('chapters', ['book_id'=>$chapter['book_id'], 'num'=>$next])['id'];
 
-        echo View('reader', $chapter);exit;
+        echo View('reader', $chapter);
     } else {
         redirect('/');
     }
