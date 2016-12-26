@@ -32,11 +32,11 @@
                   </dt>
                   <dd class="am-accordion-bd am-collapse">
                     <div class="am-accordion-content">
-                      <?php foreach ($vol['chapters'] as $chapter): ?>
                       <div class="am-cf am-article">
+                      <?php foreach ($vol['chapters'] as $chapter): ?>
                         <a href="<?=uri("chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
-                      </div>
                       <?php endforeach; ?>
+                      </div>
                     </div>
                   </dd>
                 </dl>
