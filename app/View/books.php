@@ -9,7 +9,6 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <link href="//cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" rel="stylesheet">
-    
   <style>
     .my-footer {
       padding: 10px 0;

@@ -34,7 +34,7 @@
                     <div class="am-accordion-content">
                       <div class="am-cf am-article">
                       <?php foreach ($vol['chapters'] as $chapter): ?>
-                        <a href="<?=uri("chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
+                        <a href="<?=uri("books/{$book_id}/chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
                       <?php endforeach; ?>
                       </div>
                     </div>
@@ -45,7 +45,7 @@
         <?php else: ?>
             <?php foreach ($chapters as $chapter): ?>
             <div class="am-cf am-article">
-                <a href="<?=uri("chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
+                <a href="<?=uri("books/{$book_id}/chapters/{$chapter['id']}")?>"><?=$chapter['title']?></a><br />
             </div>
             <?php endforeach; ?>
         <?php endif; ?>

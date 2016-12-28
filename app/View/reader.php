@@ -11,7 +11,7 @@
   <!--<link rel="alternate icon" type="image/png" href="assets/i/favicon.png">-->
   
   <!--预加载下一章-->
-  <link rel="prefetch" href="<?=uri('chapters', ['id'=>$next])?>" />
+  <link rel="prefetch" href="<?=uri("books/{$book_id}/chapters/{$next}")?>" />
 
   <link href="//cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" rel="stylesheet">
 
@@ -74,10 +74,10 @@
         </div>
         <hr/>
         <ul class="am-pagination am-pagination-default" style="text-align:center; margin-bottom:0px;">
-          <li class="am-pagination-prev" style="display:none;"><a id='pre' href="<?=uri("chapters/{$pre}")?>">«上一章</a></li>
-          <li class="am-pagination-prev"><a href="javascript:;" data-am-modal="{target: '#my-alert'}">加入书架</a></li>
+          <li class="am-pagination-prev" style="display:none;"><a id='pre' href="<?=uri("books/{$book_id}/chapters/{$pre}")?>">«上一章</a></li>
+          <li class="am-pagination-prev"><a href="<?=uri("books")?>">返回书架</a></li>
           <li class=""><a href="<?=uri("books/{$book_id}")?>">目录</a></li>
-          <li class="am-pagination-next"><a id='next' href="<?=uri("chapters/{$next}")?>">下一章»</a></li>
+          <li class="am-pagination-next"><a id='next' href="<?=uri("books/{$book_id}/chapters/{$next}")?>">下一章»</a></li>
         </ul>
       </div>
     </div>
@@ -87,16 +87,7 @@
   <div class="am-u-md-3 am-u-md-pull-9 my-sidebar">
     <div class="am-offcanvas" id="sidebar">
       <div class="am-offcanvas-bar">
-        <ul class="am-nav">
-          <li><a href="#">hello, 胖胖红</a></li>
-          <li class="am-nav-header"></li>
-          <li><a href="#">阿里巴巴是个快乐的青年</a></li>
-          <li><a href="#">预备 唱~</a></li>
-          <li><a href="#">胖胖</a></li>
-          <li><a href="#">胖胖胖胖</a></li>
-          <li><a href="#">胖胖胖胖胖胖胖胖红</a></li>
-        </ul>
-        
+        <div id="extendbar"></div>
         <div class="am-offcanvas-content" style="position:fixed; bottom:0px;">
             <div style="position:fixed; bottom:70px;">
                 <div id="decrement" style="cursor:pointer; position: relative; float:left; background-color:#FFFFFF; width:50px; height:50px; margin-left:50px; text-align:center;">A-</div>
@@ -121,18 +112,6 @@
 
 </div>
 
-<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
-  <div class="am-modal-dialog">
-    <div class="am-modal-hd"></div>
-    <div class="am-modal-bd">
-      功能开发中
-    </div>
-    <div class="am-modal-footer">
-      <span class="am-modal-btn">确定</span>
-    </div>
-  </div>
-</div>
-
 <footer class="my-footer">
   <p><small>© 2016 xbook.pub | SOSTART Team</small></p>
 </footer>
@@ -150,149 +129,7 @@
 <script src="/static/js/amazeui.switch.min.js"></script>
 <!--<script src="https://rawgit.com/amazeui/switch/master/amazeui.switch.min.js"></script>-->
 
-<script>
-    
-    // PC
-    $(function () {
-        // 响应键盘翻页
-        $(document).keydown(function (e) {
-            if (e.keyCode==37) {
-                $('#pre')[0].click();
-            } else if (e.keyCode==39) {
-                $('#next')[0].click();
-            }
-        });
-    });
-    
-    // MOBILE
-    $(function () {
-        // 响应手势翻页
-        $(document).hammer().on('swiperight', function () {
-            $('#pre')[0].click();
-        }).on('swipeleft', function () {
-            $('#next')[0].click();
-        });
-    });
+<script src="/static/js/reader.js"></script>
 
-    $(function () {
-
-        store = $.AMUI.store;
-        if (!store.enabled) {
-            store = $.AMUI.utils.cookie;
-            store.remove = store.unset;
-        }
-
-        // 侧边栏
-        $('#content').on('click', function () {
-            $('#sidebar').offCanvas('open');
-            return false;
-        });
-        
-        // 字体
-        (function(){
-            var sizelist = ['16', '20', '26'];
-            var size = (store.get('fontsize')==null) ? 0 : store.get('fontsize');
-            $('#content').css('font-size', sizelist[size]+'px');
-
-            $('#increment').click(function () {
-                size = size+1 > sizelist.length-1 ? sizelist.length-1 : size+1;
-                store.set('fontsize', size);
-                $('#content').css('font-size', sizelist[size]+'px');
-            });
-
-            $('#decrement').click(function () {
-                size = size-1 < 0 ? 0 : size-1;
-                store.set('fontsize', size);
-                $('#content').css('font-size', sizelist[size]+'px');
-            });
-        })();
-        
-        // 阅读模式及配色
-        (function(){
-
-            var night = (store.get('reader.night')==null) ? false : store.get('reader.night');
-            var style = (store.get('reader.style')==null) ? 1 : store.get('reader.style');
-
-            // 阅读样式选择
-            $('#style-1').click(function () {
-
-                style = 1; store.set('reader.style', 1);
-
-                if (night) {
-                    $('[name="day-night"]').bootstrapSwitch('state', false);
-                }
-
-                $('body').css({
-                    'background-color': '#FFF'
-                });
-                $('#content').css({
-                    'color' : '#000'
-                });
-            });
-            $('#style-2').click(function () {
-
-                style = 2; store.set('reader.style', 2);
-
-                if (night) {
-                    $('[name="day-night"]').bootstrapSwitch('state', false);
-                }
-
-                $('body').css({
-                    'background-color': '#C7EDCC'
-                });
-                $('#content').css({
-                    'color' : '#000000'
-                });
-            });
-            $('#style-3').click(function () {
-
-                style = 3; store.set('reader.style', 3);
-
-                if (night) {
-                    $('[name="day-night"]').bootstrapSwitch('state', false);
-                }
-
-                $('body').css({
-                    'background-color': '#FFF2E2'
-                });
-                $('#content').css({
-                    'color' : '#000000'
-                });
-            });
-
-            // 阅读模式切换
-            $('[name="day-night"]').bootstrapSwitch();
-            $('[name="day-night"]').on('switchChange.bootstrapSwitch', function(event, state) {
-                if (state) {
-                    // 夜间
-                    night = true; store.set('reader.night', true);
-
-                    $('body').css({
-                        'background-color': '#222'
-                    });
-                    $('#content').css({
-                        'color' : '#778899' // #F8F8FF
-                    });
-                } else {
-                    // 白天
-                    night = false; store.set('reader.night', false);
-                    $('#style-'+style).click();
-                }
-            });
-            
-            // 初始化
-            function styleinit() {
-                if (night) {
-                    $('[name="day-night"]').bootstrapSwitch('state', true);
-                } else {
-                    $('#style-'+style).click();
-                }
-            }
-
-            styleinit();
-
-        })();
-    });
-</script>
 </body>
 </html>
