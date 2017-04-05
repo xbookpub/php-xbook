@@ -3,6 +3,8 @@
 <head lang="zh-cmn-Hans">
   <meta charset="UTF-8">
   <title><?=$title?></title>
+  <?php if (isset($description)): ?><meta name="description" content="<?php echo $description; ?>"><?php endif; ?>
+  <?php if (isset($keyword)): ?><meta name="keyword" content="<?php echo $keyword; ?>"><?php endif; ?>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
@@ -130,6 +132,8 @@
 <!--<script src="https://rawgit.com/amazeui/switch/master/amazeui.switch.min.js"></script>-->
 
 <script src="/static/js/reader.js"></script>
+
+<script src="/static/js/extends.js"></script>
 
 </body>
 </html>
